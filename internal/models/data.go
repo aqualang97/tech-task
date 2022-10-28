@@ -8,14 +8,14 @@ type DataParse struct {
 	TerminalID      int
 	PartnerObjectID int
 
-	AmountTotal        float64
-	AmountOriginal     float64
+	AmountTotal        int
+	AmountOriginal     int
 	CommissionPS       float64
-	CommissionClient   float64
+	CommissionClient   int
 	CommissionProvider float64
 
-	DateInput *time.Time
-	DatePost  *time.Time
+	DateInput time.Time
+	DatePost  time.Time
 
 	Status           string
 	PaymentType      string
