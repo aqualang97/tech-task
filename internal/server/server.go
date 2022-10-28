@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/csv"
 	"fmt"
+	"github.com/go-chi/chi"
 	"log"
 	"net/http"
 	"os"
@@ -39,17 +40,15 @@ func (s *Server) Start(filePath string) error {
 
 	service, err := services.NewManager(storage)
 
-	controller := controller.NewController(service, s.cfg)
-	mux := http.NewServeMux()
-
-	router.Router(controller, mux)
-
+	ctr := controller.NewController(service, s.cfg)
+	r := chi.NewRouter()
+	router.Router(ctr, r)
 	err = s.StartParse(filePath, db, TX)
 	if err != nil {
 		log.Println(err)
 	}
 
-	err = http.ListenAndServe(s.cfg.PortListen, mux)
+	err = http.ListenAndServe(s.cfg.PortListen, r)
 
 	return nil
 }
