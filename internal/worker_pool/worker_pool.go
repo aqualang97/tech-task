@@ -27,14 +27,14 @@ func (pool *WorkerPool) Stop() {
 	}
 }
 
-func (pool *WorkerPool) Start(filePath string, wg *sync.WaitGroup, goNum int, db *sql.DB, TX *sql.Tx) {
+func (pool *WorkerPool) Start(filePath string, wg *sync.WaitGroup, goNum int, db *sql.DB) {
 	var data *models.DataParse
-
+	p := parser.NewDataParser(db)
 	defer wg.Done()
 	for {
 		select {
 		case data = <-pool.StartSendData:
-			_ = parser.ParseFromFile(data, goNum, db, TX)
+			_ = p.ParseFromFile(data, goNum, db)
 		case <-pool.StopSend:
 			return
 		}

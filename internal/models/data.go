@@ -28,3 +28,13 @@ type DataParse struct {
 	PayeeBankAccount string `json:"payee_bank_account"`
 	PaymentNarrative string `json:"payment_narrative"`
 }
+
+type Queries struct {
+	Transactions []string
+	Terminal     []string
+	Status       []string
+	Payment      []string
+	FromDate     []string
+	ToDate       []string
+	Narrative    []string
+}
