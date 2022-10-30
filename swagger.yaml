@@ -73,8 +73,6 @@ paths:
 
   /search:
     get:
-      consumes:
-        - application/json
       parameters:
         - name: transaction
           in: query

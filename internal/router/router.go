@@ -6,10 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"strings"
-	"techTask/internal/models"
-
-	//"net/http"
 	"techTask/internal/controller"
+	"techTask/internal/models"
 )
 
 func Router(c *controller.Controller, r *gin.Engine) {
@@ -17,15 +15,10 @@ func Router(c *controller.Controller, r *gin.Engine) {
 	r.GET("/download", func(ctx *gin.Context) {
 		url := "https://drive.google.com/u/0/uc?id=1IwZ3uUCHGpSL2OoQu4mtbw7Ew3ZamcGB&export=download"
 		filename := "dataParse.csv"
-
+		fmt.Println(123)
 		err := c.Data.DownloadFile(url, filename)
 		if err != nil {
-			fmt.Println(err)
-			fmt.Println(err)
-			fmt.Println(err)
-			fmt.Println(err)
-			fmt.Println(err)
-			fmt.Println(err)
+			log.Println(err)
 		}
 	})
 
@@ -51,11 +44,4 @@ func Router(c *controller.Controller, r *gin.Engine) {
 			log.Println(err)
 		}
 	})
-
-	//r.GET("/transaction/{id}", c.Data.GetByTransactionID)
-	//r.GET("/terminal/{id}", c.Data.GetByTerminalID)
-	//r.GET("/status={s}", c.Data.GetByStatus)
-	//r.GET("/payment-type={t}", c.Data.GetByPaymentType)
-	//r.GET("/from={start}&to={end}", c.Data.GetByTime)
-	//r.GET("/narrative={text}", c.Data.GetByNarrative)
 }

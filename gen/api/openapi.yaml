@@ -1,0 +1,153 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: aqualang9797@gmail.com
+  description: Simple swagger implementation in Go HTTP
+  title: Go Restful API with Swagger
+  version: 0.1.0
+servers:
+- url: http://localhost:8080/
+tags:
+- name: Test task
+paths:
+  /download:
+    get:
+      responses:
+        "200":
+          content: {}
+          description: OK
+      summary: Download .csv file with link what hardcode in app.
+      tags:
+      - data
+      x-accepts: application/json
+  /search:
+    get:
+      parameters:
+      - description: Search transaction by transaction ID. You can use several IDs
+          to see several transaction (like transaction=1,2,10 ). This parameter is
+          incompatible with other.
+        in: query
+        name: transaction
+        schema:
+          type: integer
+      - description: Search transaction by terminal ID. You can use several IDs to
+          see several transaction (like transaction=3507,3510 ). This parameter is
+          incompatible with other.
+        in: query
+        name: terminal
+        schema:
+          type: integer
+      - description: Search transaction by status. You can use several statuses to
+          see several transaction (like transaction=accepted,declined ). This parameter
+          is incompatible with other.
+        in: query
+        name: status
+        schema:
+          type: string
+      - description: Search transaction by payment type. You can use several types
+          to see several transaction (like transaction=cash,card ). This parameter
+          is incompatible with other.
+        in: query
+        name: payment
+        schema:
+          type: string
+      - description: Search transaction in the selected date interval. Must be used
+          together with `dateTo` and is incompatible with other.
+        in: query
+        name: dateFrom
+        schema:
+          type: string
+      - description: Search transaction in the selected date interval. Must be used
+          together with `dateFrom` and is incompatible with other.
+        in: query
+        name: dateTo
+        schema:
+          type: string
+      - description: Search transaction by partially specified payment narrative.
+          This parameter is incompatible with other.
+        in: query
+        name: narrative
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.DataParse'
+          description: OK
+      summary: Get transaction items
+      tags:
+      - data
+      x-accepts: application/json
+components:
+  schemas:
+    models.DataParse:
+      example:
+        transaction_id: 0
+        payment_narrative: payment_narrative
+        amount_total: 5
+        payee_bank_account: payee_bank_account
+        date_input: date_input
+        commission_provider: 3.616076749251911
+        payee_id: 4
+        amount_original: 2
+        commission_ps: 7.061401241503109
+        payment_type: payment_type
+        payment_number: payment_number
+        service: service
+        service_id: 2
+        payee_name: payee_name
+        partner_object_id: 5
+        date_post: date_post
+        payee_bank_mfo: 7
+        request_id: 6
+        commission_client: 9
+        terminal_id: 1
+        status: status
+      properties:
+        transaction_id:
+          type: integer
+        request_id:
+          type: integer
+        terminal_id:
+          type: integer
+        partner_object_id:
+          type: integer
+        amount_total:
+          type: integer
+        amount_original:
+          type: integer
+        commission_ps:
+          type: number
+        commission_client:
+          type: integer
+        commission_provider:
+          type: number
+        date_input:
+          type: string
+        date_post:
+          type: string
+        status:
+          type: string
+        payment_type:
+          type: string
+        payment_number:
+          type: string
+        service_id:
+          type: integer
+        service:
+          type: string
+        payee_id:
+          type: integer
+        payee_name:
+          type: string
+        payee_bank_mfo:
+          type: integer
+        payee_bank_account:
+          type: string
+        payment_narrative:
+          type: string
+      type: object
+x-original-swagger-version: "2.0"
+
