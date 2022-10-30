@@ -276,7 +276,9 @@ func (d *DataRepo) Search(queries *models.Queries) (*[]models.DataParse, error) 
 		}
 
 	} else if len(queries.Narrative[0]) > 0 {
-		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"payment_narrative": values[0]}).ToSql()
+		nar := "%" + queries.Narrative[0] + "%"
+		fmt.Println(nar)
+		dataQ, args, err = psql.Select("*").From("data").Where("payment_narrative LIKE $1", nar).ToSql()
 		if err != nil {
 			return nil, err
 		}
@@ -289,6 +291,9 @@ func (d *DataRepo) Search(queries *models.Queries) (*[]models.DataParse, error) 
 
 func (d *DataRepo) rowsQuery(dataQ string, args []interface{}) (*[]models.DataParse, error) {
 	rows, err := d.DB.Query(dataQ, args...)
+	fmt.Println(err)
+
+	fmt.Println(args...)
 	if err != nil {
 		return nil, err
 	}
@@ -303,7 +308,6 @@ func (d *DataRepo) rowsQuery(dataQ string, args []interface{}) (*[]models.DataPa
 			&data.AmountTotal, &data.AmountOriginal, &data.CommissionPS, &data.CommissionClient, &data.CommissionProvider,
 			&data.DateInput, &data.DatePost, &data.Status, &data.PaymentType, &data.PaymentNumber, &data.ServiceID,
 			&data.Service, &data.PayeeID, &data.PayeeName, &data.PayeeBankMfo, &data.PayeeBankAccount, &data.PaymentNarrative)
-
 		inputStr := data.DateInput.Format("2006-01-02 15:04:05")
 		data.DateInput, err = time.Parse("2006-01-02 15:04:05", inputStr)
 		if err != nil {

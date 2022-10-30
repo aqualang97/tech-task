@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"strings"
 	"techTask/internal/models"
 
@@ -35,16 +36,20 @@ func Router(c *controller.Controller, r *gin.Engine) {
 			Terminal:     strings.Split(ctx.Query("terminal"), ","),
 			Status:       strings.Split(ctx.Query("status"), ","),
 			Payment:      strings.Split(ctx.Query("payment"), ","),
-			FromDate:     strings.Split(ctx.Query("from"), ","),
-			ToDate:       strings.Split(ctx.Query("to"), ","),
-			Narrative:    strings.Split(ctx.Query("narrative"), ","),
+			FromDate:     []string{ctx.Query("from")},
+			ToDate:       []string{ctx.Query("to")},
+			Narrative:    []string{ctx.Query("narrative")},
 		}
 		fmt.Println(resp)
 		data, err := c.Data.Search(&resp)
 		if err != nil {
+			log.Println(err)
 		}
-		json.NewEncoder(ctx.Writer).Encode(data)
-
+		d, _ := json.Marshal(data)
+		_, err = ctx.Writer.Write(d)
+		if err != nil {
+			log.Println(err)
+		}
 	})
 
 	//r.GET("/transaction/{id}", c.Data.GetByTransactionID)

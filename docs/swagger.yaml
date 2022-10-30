@@ -1,0 +1,132 @@
+basePath: /
+definitions:
+  models.DataParse:
+    properties:
+      transaction_id:
+        type: integer
+      request_id:
+        type: integer
+      terminal_id:
+        type: integer
+      partner_object_id:
+        type: integer
+      amount_total:
+        type: integer
+      amount_original:
+        type: integer
+      commission_ps:
+        type: number
+      commission_client:
+        type: integer
+      commission_provider:
+        type: number
+      date_input:
+        type: string
+      date_post:
+        type: string
+      status:
+        type: string
+      payment_type:
+        type: string
+      payment_number:
+        type: string
+      service_id:
+        type: integer
+      service:
+        type: string
+      payee_id:
+        type: integer
+      payee_name:
+        type: string
+      payee_bank_mfo:
+        type: integer
+      payee_bank_account:
+        type: string
+      payment_narrative:
+        type: string
+
+swagger: "2.0"
+info:
+  title: Go Restful API with Swagger
+  version: "0.1.0"
+  contact:
+    email: aqualang9797@gmail.com
+  description: Simple swagger implementation in Go HTTP
+
+tags:
+  - name: "Test task"
+host: localhost:8080
+schemes:
+  - http
+paths:
+
+  /download:
+    get:
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Download .csv file with link what hardcode in app.
+      tags:
+        - data
+
+  /search:
+    get:
+      parameters:
+        - name: transaction
+          in: query
+          type: integer
+          description: Search transaction by transaction ID.
+            You can use several IDs to see several transaction (like transaction=1,2,10 ).
+            This parameter is incompatible with other.
+
+        - name: terminal
+          in: query
+          type: integer
+          description: Search transaction by terminal ID.
+            You can use several IDs to see several transaction (like transaction=3507,3510 ).
+            This parameter is incompatible with other.
+
+        - name: status
+          in: query
+          type: string
+          description: Search transaction by status.
+            You can use several statuses to see several transaction (like transaction=accepted,declined ).
+            This parameter is incompatible with other.
+
+        - name: payment
+          in: query
+          type: string
+          description: Search transaction by payment type.
+            You can use several types to see several transaction (like transaction=cash,card ).
+            This parameter is incompatible with other.
+
+        - name: dateFrom
+          in: query
+          type: string
+          description: Search transaction in the selected date interval.
+            Must be used together with `dateTo` and is incompatible with other.
+
+        - name: dateTo
+          in: query
+          type: string
+          description: Search transaction in the selected date interval.
+            Must be used together with `dateFrom` and is incompatible with other.
+        - name: narrative
+          in: query
+          type: string
+          description: Search transaction by partially specified payment narrative.
+            This parameter is incompatible with other.
+
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DataParse'
+
+      summary: Get transaction items
+      tags:
+        - data
