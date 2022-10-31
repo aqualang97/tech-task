@@ -26,16 +26,22 @@ func NewConfig() *Config {
 	if err != nil {
 		log.Fatal("Can`t load postgres.env")
 	}
-	cfg.PGUserName = os.Getenv("user")
-	cfg.PGPassword = os.Getenv("pwd")
-	cfg.PGDBName = os.Getenv("dbName")
+	cfg.PGPassword = os.Getenv("PG_PASSWORD")
+
+	err = godotenv.Load("config/config.env")
+	if err != nil {
+		log.Fatal("Can`t load postgres.env")
+	}
+	cfg.PGUserName = os.Getenv("USER")
+	cfg.PGDBName = os.Getenv("DBNAME")
+
 	cfg.PGHOST = os.Getenv("host")
 	cfg.PGPort, _ = strconv.Atoi(os.Getenv("port"))
 	cfg.PGMaxIdleCons, _ = strconv.Atoi(os.Getenv("maxIdleConns"))
 	cfg.PGMaxOpenCons, _ = strconv.Atoi(os.Getenv("maxOpenConns"))
 	cfg.PGConsMaxLifeTime, _ = strconv.Atoi(os.Getenv("connMaxLifetime"))
 	cfg.PortListen = os.Getenv("portListen")
-	fmt.Println(cfg.PortListen)
+	fmt.Println(cfg)
 
 	return cfg
 }

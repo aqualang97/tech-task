@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  api-task:
+    container_name: api-app
+    build: ./
+    image: api-app
+    command: ./wait-for-postgres.sh db ./techTask
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment:
+      - PG_PASSWORD=111111
+
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+
+    environment:
+      - PG_PASSWORD=111111
+
+    ports:
+      - 5436:5432
+
+
