@@ -25,13 +25,13 @@ func NewConfig() *Config {
 	cfg := &Config{}
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Can`t load .env")
+		log.Println("Can`t load .env")
 	}
 	viper.AddConfigPath("config")
 	viper.SetConfigName("config")
 	err = viper.ReadInConfig()
 	if err != nil {
-		log.Fatal("Can`t init configs")
+		log.Println("Can`t init configs")
 	}
 
 	cfg.PGPassword = os.Getenv("DB_PASSWORD")
