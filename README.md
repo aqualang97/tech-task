@@ -17,10 +17,10 @@ http://localhost:8000. There are 3 routes:
 * `create-file`
 
 First of all, you need to follow the route `/download` (http://localhost:8000/download) - it will download
-file and then saved to the database.
+file and then save it to the database.
 
 Next, you can follow the route `/search`, and also add to the corresponding search arguments.
-The application can search for transactions by the following parameters:
+The application can search transactions by the following parameters:
 * `transaction_id:`
   * http://localhost:8000/search?transaction=1
   * http://localhost:8000/search?transaction=2,5,10
@@ -39,10 +39,10 @@ The application can search for transactions by the following parameters:
     * http://localhost:8000/search?narrative=Перерахування
 
 
-All transactions ordered by `transaction_id`.
+All transactions are ordered by `transaction_id`.
 ___
-Next, you can follow the route `/create-file`, (with appropriate parameters like in `/search` route) and data what you 
-want search will be saved in file. Links for example:
+Next, you can follow the route `/create-file`, (with appropriate parameters like in `/search` route) and data that you 
+want search will save in file. Links for example:
 * http://localhost:8000/create-file?terminal_id=3506,3507
 * http://localhost:8000/create-file?transaction=2,5,10
 * http://localhost:8000/create-file?from=2022-08-12&to=2022-08-18
