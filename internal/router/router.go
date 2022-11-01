@@ -59,4 +59,29 @@ func Router(c *controller.Controller, r *gin.Engine) {
 		}
 
 	})
+	r.GET("/create-file", func(ctx *gin.Context) {
+		resp := models.Queries{
+			Transactions: strings.Split(ctx.Query("transaction"), ","),
+			Terminal:     strings.Split(ctx.Query("terminal"), ","),
+			Status:       strings.Split(ctx.Query("status"), ","),
+			Payment:      strings.Split(ctx.Query("payment"), ","),
+			FromDate:     []string{ctx.Query("from")},
+			ToDate:       []string{ctx.Query("to")},
+			Narrative:    []string{ctx.Query("narrative")},
+		}
+		err := c.Data.CreateFile(&resp)
+		if err != nil {
+			d, _ := json.Marshal("invalid data")
+			_, err = ctx.Writer.Write(d)
+			if err != nil {
+				log.Println(err)
+			}
+		}
+		d, _ := json.Marshal("data successfully saved")
+		_, err = ctx.Writer.Write(d)
+		if err != nil {
+			log.Println(err)
+		}
+
+	})
 }

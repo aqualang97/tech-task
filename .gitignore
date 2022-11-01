@@ -5,3 +5,10 @@ gen
 vendor
 DS_Store
 /.env
+
+/transaction_id.csv
+/terminal_id.csv
+/status.csv
+/payment_type.csv 
+/from-to.csv
+/payment_narrative.csv

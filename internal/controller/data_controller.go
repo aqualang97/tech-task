@@ -37,3 +37,8 @@ func (ctr *DataController) Search(q *models.Queries) (*[]models.DataParse, error
 	data, err := ctr.services.Data.SearchService(q)
 	return data, err
 }
+
+func (ctr *DataController) CreateFile(q *models.Queries) error {
+	err := ctr.services.Data.CreateFileService(q)
+	return err
+}

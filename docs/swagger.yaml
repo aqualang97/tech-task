@@ -71,6 +71,7 @@ paths:
       tags:
         - data
 
+
   /search:
     get:
       consumes:
@@ -130,5 +131,17 @@ paths:
             $ref: '#/definitions/models.DataParse'
 
       summary: Get transaction items
+      tags:
+        - data
+
+
+  /create-file:
+    get:
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Created .csv file with data according to your parameters you want to know
       tags:
         - data

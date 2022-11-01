@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"encoding/csv"
+	"errors"
 	"fmt"
 	sq "github.com/Masterminds/squirrel"
 	"io/ioutil"
@@ -129,15 +130,6 @@ func (d *DataRepo) rowsQuery(dataQ string, args []interface{}) (*[]models.DataPa
 			return nil, err
 		}
 
-		if err != nil {
-			return nil, err
-		}
-
-		//i, _ := strconv.ParseInt(input, 10, 64)
-		//p, _ := strconv.ParseInt(post, 10, 64)
-		//
-		//data.DateInput = time.Unix(i, 0)
-		//data.DatePost = time.Unix(p, 0)
 		listData = append(listData, data)
 	}
 	fmt.Println(listData)
@@ -231,5 +223,83 @@ func (d *DataRepo) DownloadFile(url, filename string) error {
 	}
 	fmt.Println(filepath.Abs(filename))
 	log.Printf("Data save to file %s\n", filename)
+	return nil
+}
+
+func (d *DataRepo) CreateFile(queries *models.Queries) error {
+	nameFile := ""
+	fmt.Println(queries.Transactions[0] == "", len(queries.Terminal), len(queries.Status), len(queries.Payment), len(queries.FromDate), len(queries.ToDate), queries.Narrative)
+	switch {
+	case queries.Transactions[0] != "":
+		nameFile = "transaction_id.csv"
+	case queries.Terminal[0] != "":
+		nameFile = "terminal_id.csv"
+	case queries.Status[0] != "":
+		nameFile = "status.csv"
+	case queries.Payment[0] != "":
+		nameFile = "payment_type.csv"
+	case queries.FromDate[0] != "":
+		if queries.ToDate[0] != "" {
+			nameFile = "from-to.csv"
+		}
+	case queries.Narrative[0] != "":
+		nameFile = "payment_narrative.csv"
+	default:
+		return errors.New("invalid data")
+	}
+	data, err := d.Search(queries)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	firstStr := []string{"TransactionId,RequestId,TerminalId,PartnerObjectId,AmountTotal,AmountOriginal,CommissionPS,CommissionClient,CommissionProvider,DateInput,DatePost,Status,PaymentType,PaymentNumber,ServiceId,Service,PayeeId,PayeeName,PayeeBankMfo,PayeeBankAccount,PaymentNarrative"}
+
+	newFile, err := os.Create(nameFile)
+	csvwriter := csv.NewWriter(newFile)
+	newData := *data
+	for i, _ := range newData {
+		inpDate := newData[i].DateInput.Format("2006-01-02 15:04:05")
+		postDate := newData[i].DateInput.Format("2006-01-02 15:04:05")
+
+		newStr := []string{
+			strconv.Itoa(newData[i].TransactionID),
+			strconv.Itoa(newData[i].RequestID),
+			strconv.Itoa(newData[i].TerminalID),
+
+			strconv.Itoa(newData[i].PartnerObjectID),
+			strconv.Itoa(newData[i].AmountTotal),
+			strconv.Itoa(newData[i].AmountOriginal),
+
+			fmt.Sprintf("%2f", newData[i].CommissionPS),
+			strconv.Itoa(newData[i].CommissionClient),
+			fmt.Sprintf("%2f", newData[i].CommissionProvider),
+			inpDate,
+			postDate,
+
+			newData[i].Status,
+			newData[i].PaymentType,
+			newData[i].PaymentNumber,
+
+			strconv.Itoa(newData[i].ServiceID),
+			newData[i].Service,
+			strconv.Itoa(newData[i].PayeeID),
+			newData[i].PayeeName,
+
+			strconv.Itoa(newData[i].PayeeBankMfo),
+			newData[i].PayeeBankAccount,
+			newData[i].PaymentNarrative,
+		}
+		if i == 0 {
+			_ = csvwriter.Write(firstStr)
+		}
+		_ = csvwriter.Write(newStr)
+	}
+	csvwriter.Flush()
+	err = newFile.Close()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 	return nil
 }

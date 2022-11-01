@@ -40,3 +40,13 @@ func (service *DataWebService) SearchService(queries *models.Queries) (*[]models
 	return data, nil
 
 }
+
+func (service *DataWebService) CreateFileService(queries *models.Queries) error {
+
+	err := service.store.Data.CreateFile(queries)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
