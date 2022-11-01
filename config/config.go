@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 	"log"
@@ -15,9 +14,7 @@ type Config struct {
 	PGHOST     string
 	PGPort     string
 	SSLMode    string
-	//PGMaxIdleCons     int
-	//PGMaxOpenCons     int
-	//PGConsMaxLifeTime int
+
 	PortListen string
 }
 
@@ -42,20 +39,7 @@ func NewConfig() *Config {
 	cfg.SSLMode = viper.GetString("db.sslmode")
 	cfg.PortListen = viper.GetString("port")
 
-	//err = godotenv.Load("config/config.env")
-	//if err != nil {
-	//	log.Fatal("Can`t load .env")
-	//}
-	//cfg.PGUserName = os.Getenv("USER")
-	//cfg.PGDBName = os.Getenv("DBNAME")
-	//
-	//cfg.PGHOST = os.Getenv("host")
-	//cfg.PGPort, _ = strconv.Atoi(os.Getenv("port"))
-	//cfg.PGMaxIdleCons, _ = strconv.Atoi(os.Getenv("maxIdleConns"))
-	//cfg.PGMaxOpenCons, _ = strconv.Atoi(os.Getenv("maxOpenConns"))
-	//cfg.PGConsMaxLifeTime, _ = strconv.Atoi(os.Getenv("connMaxLifetime"))
-	//cfg.PortListen = os.Getenv("portListen")
-	fmt.Println(cfg)
+	//fmt.Println(cfg)
 
 	return cfg
 }

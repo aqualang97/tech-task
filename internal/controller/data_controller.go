@@ -33,16 +33,6 @@ func (ctr *DataController) DownloadFile(url, filename string) error {
 	return nil
 }
 
-// Search godoc
-// @Summary Search
-// @Description Search
-// @Tags suppliers
-// @ID get-suppliers
-// @Accept  json
-// @Produce  json
-// @Success 200 {array} models.DataParse
-// @Router /suppliers [get]
-
 func (ctr *DataController) Search(q *models.Queries) (*[]models.DataParse, error) {
 	data, err := ctr.services.Data.SearchService(q)
 	return data, err

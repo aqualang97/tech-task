@@ -23,11 +23,6 @@ func NewServer(cfg *config.Config, db *sql.DB) *Server {
 
 func (s *Server) Start() error {
 	db := s.db
-	//TX, err := db.Begin()
-	//if err != nil {
-	//	fmt.Println(err)
-	//	os.Exit(1)
-	//}
 	storage := store.NewStore(s.cfg, db)
 
 	service, err := services.NewManager(storage)

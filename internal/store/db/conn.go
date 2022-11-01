@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"techTask/config"
+	"time"
 )
 
 func Conn() (*sql.DB, error) {
@@ -27,8 +28,8 @@ func Conn() (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	//db.SetMaxIdleConns(cfg.PGMaxIdleCons)
-	//db.SetMaxOpenConns(cfg.PGMaxOpenCons)
-	//db.SetConnMaxLifetime(time.Duration(cfg.PGConsMaxLifeTime) * time.Second)
+	db.SetMaxIdleConns(2)
+	db.SetMaxOpenConns(10)
+	db.SetConnMaxLifetime(10 * time.Second)
 	return db, nil
 }

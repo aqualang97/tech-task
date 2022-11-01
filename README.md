@@ -1,11 +1,8 @@
-#  Guide on how to run application
+#  Guide on how to run and use application
 
 
-### The first time you open the application
-```
-make first-run
-```
-### For subsequent launches.
+
+### For run application:
 ```
 make run
 ```

@@ -19,6 +19,12 @@ func Router(c *controller.Controller, r *gin.Engine) {
 		err := c.Data.DownloadFile(url, filename)
 		if err != nil {
 			log.Println(err)
+		} else {
+			d, _ := json.Marshal("Success")
+			_, err = ctx.Writer.Write(d)
+			if err != nil {
+				log.Println(err)
+			}
 		}
 	})
 
@@ -38,10 +44,19 @@ func Router(c *controller.Controller, r *gin.Engine) {
 		if err != nil {
 			log.Println(err)
 		}
-		d, _ := json.Marshal(data)
-		_, err = ctx.Writer.Write(d)
-		if err != nil {
-			log.Println(err)
+		if data == nil {
+			d, _ := json.Marshal("invalid data")
+			_, err = ctx.Writer.Write(d)
+			if err != nil {
+				log.Println(err)
+			}
+		} else {
+			d, _ := json.Marshal(data)
+			_, err = ctx.Writer.Write(d)
+			if err != nil {
+				log.Println(err)
+			}
 		}
+
 	})
 }

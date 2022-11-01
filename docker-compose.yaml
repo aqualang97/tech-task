@@ -13,11 +13,16 @@ services:
       DATABASE_HOST: "db"
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "postgres"
-      DB_PASSWORD: "111111"
+      DB_PASSWORD: "password"
     volumes:
       - .:/app
+#    command:
+#      - docker run --name db -d -e POSTGRES_PASSWORD=password -e POSTGRES_USER=password postgres
     depends_on:
       - db
+    networks:
+      - fullstack
+
     entrypoint: ['go', 'run', 'cmd/main.go']
 
 
@@ -25,9 +30,9 @@ services:
   db:
     restart: always
     image: postgres:latest
-
+    container_name: database
     volumes:
-      - ./.database/postgres/data:/var/lib/postgresql/data
+      - database_postgres:/var/lib/postgresql/data
 
     environment:
       POSTGRES_PASSWORD: "password"
@@ -36,4 +41,12 @@ services:
 
     ports:
       - "5438:5432"
+    networks:
+      - fullstack
 
+volumes:
+  database_postgres:
+
+networks:
+  fullstack:
+    driver: bridge
