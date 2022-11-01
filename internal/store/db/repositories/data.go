@@ -240,22 +240,26 @@ func (d *DataRepo) Search(queries *models.Queries) (*[]models.DataParse, error) 
 	}
 
 	if len(queries.Transactions[0]) > 0 {
-		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"transaction_id": values[0]}).ToSql()
+		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"transaction_id": values[0]}).
+			OrderBy("transaction_id").ToSql()
 		if err != nil {
 			return nil, err
 		}
 	} else if len(queries.Terminal[0]) > 0 {
-		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"terminal_id": values[1]}).ToSql()
+		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"terminal_id": values[1]}).
+			OrderBy("transaction_id").ToSql()
 		if err != nil {
 			return nil, err
 		}
 	} else if len(queries.Status[0]) > 0 {
-		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"status": values[2]}).ToSql()
+		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"status": values[2]}).
+			OrderBy("transaction_id").ToSql()
 		if err != nil {
 			return nil, err
 		}
 	} else if len(queries.Payment[0]) > 0 {
-		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"payment_type": values[3]}).ToSql()
+		dataQ, args, err = psql.Select("*").From("data").Where(sq.Eq{"payment_type": values[3]}).
+			OrderBy("transaction_id").ToSql()
 		if err != nil {
 			return nil, err
 		}
@@ -267,7 +271,9 @@ func (d *DataRepo) Search(queries *models.Queries) (*[]models.DataParse, error) 
 			//var fromTo []string
 			//fromTo = append(fromTo, values[4]...)
 
-			dataQ, args, err = psql.Select("*").From("data").Where(sq.Expr("date_post BETWEEN $1 AND $2", queries.FromDate[0], queries.ToDate[0])).ToSql()
+			dataQ, args, err = psql.Select("*").From("data").
+				Where(sq.Expr("date_post BETWEEN $1 AND $2", queries.FromDate[0], queries.ToDate[0])).
+				OrderBy("transaction_id").ToSql()
 
 			fmt.Println(dataQ)
 			if err != nil {
@@ -278,7 +284,8 @@ func (d *DataRepo) Search(queries *models.Queries) (*[]models.DataParse, error) 
 	} else if len(queries.Narrative[0]) > 0 {
 		nar := "%" + queries.Narrative[0] + "%"
 		fmt.Println(nar)
-		dataQ, args, err = psql.Select("*").From("data").Where("payment_narrative LIKE $1", nar).ToSql()
+		dataQ, args, err = psql.Select("*").From("data").Where("payment_narrative LIKE $1", nar).
+			OrderBy("transaction_id").ToSql()
 		if err != nil {
 			return nil, err
 		}

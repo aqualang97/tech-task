@@ -12,10 +12,10 @@ RUN apt-get install -y postgresql-client
 RUN chmod +x wait-for-postgres.sh
 
 RUN go mod download
-RUN go build -o techTask ./cmd/main.go
+RUN go build -o techtask ./cmd/main.go
 
-CMD ["./api-task"]
-
+CMD ["./techtask"]
+EXPOSE 8000
 
 #
 #COPY ./ ./

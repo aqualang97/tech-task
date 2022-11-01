@@ -37,13 +37,17 @@ func (s *Server) Start() error {
 	router.Router(ctr, r)
 	if err != nil {
 		log.Println(err)
+		log.Println(err)
 	}
 	err = s.createTables()
 	if err != nil {
 		log.Println(err)
+		log.Println(err)
 	}
-	err = http.ListenAndServe(s.cfg.PortListen, r)
+
+	err = http.ListenAndServe(":"+s.cfg.PortListen, r)
 	if err != nil {
+		log.Fatal(err)
 		log.Fatal(err)
 	}
 	return nil

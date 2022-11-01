@@ -1,4 +1,44 @@
-# Руководство по запуску приложения
+#  Guide on how to run application
 
 
-###
+### The first time you open the application
+```
+make first-run
+```
+### For subsequent launches.
+```
+make run
+```
+
+## How to use this project?
+After you have launched the application, 
+you need to go to the address 
+http://localhost:8000. There are 2 routes:
+
+* `/download`
+* `/search`
+
+First of all, you need to follow the route `/download` (http://localhost:8000/download) - it will download
+file and then saved to the database.
+
+Next, you can follow the route `/search`, and also add to the corresponding search arguments.
+The application can search for transactions by the following parameters:
+* `transaction_id:`
+  * http://localhost:8000/search?transaction=1
+  * http://localhost:8000/search?transaction=2,5,10
+* `terminal_id:`
+    * http://localhost:8000/search?terminal=3506
+    * http://localhost:8000/search?terminal_id=3506,3507
+* `status:`
+    * http://localhost:8000/search?status=accepted
+    * http://localhost:8000/search?status=accepted,declined
+* `payment_type:`
+    * http://localhost:8000/search?payment=cash
+    * http://localhost:8000/search?payment=cash,card
+* `from/to date_post:`
+  * http://localhost:8000/search?from=2022-08-12&to=2022-08-18
+* `part of payment_narrative:`
+    * http://localhost:8000/search?narrative=Перерахування
+
+
+All transactions ordered by `transaction_id`.

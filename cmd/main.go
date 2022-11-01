@@ -6,18 +6,18 @@ import (
 	"techTask/config"
 
 	"techTask/internal/server"
-	db2 "techTask/internal/store/db"
+	db "techTask/internal/store/db"
 )
 
 func main() {
 
-	db, err := db2.Conn()
+	d, err := db.Conn()
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
+	defer d.Close()
 	cfg := config.NewConfig()
-	s := server.NewServer(cfg, db)
+	s := server.NewServer(cfg, d)
 	err = s.Start()
 
 	if err != nil {

@@ -1,28 +1,39 @@
 version: "3.9"
 
 services:
-  api-task:
-    container_name: api-app
-    build: ./
-    image: api-app
-    command: ./wait-for-postgres.sh db ./techTask
+  techtask:
+    restart: always
+    container_name: tech-task
+    build: .
+
     ports:
-      - 8000:8000
+      - "8000:8000"
+
+    environment:
+      DATABASE_HOST: "db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "postgres"
+      DB_PASSWORD: "111111"
+    volumes:
+      - .:/app
     depends_on:
       - db
-    environment:
-      - PG_PASSWORD=111111
+    entrypoint: ['go', 'run', 'cmd/main.go']
+
+
 
   db:
     restart: always
     image: postgres:latest
+
     volumes:
       - ./.database/postgres/data:/var/lib/postgresql/data
 
     environment:
-      - PG_PASSWORD=111111
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "postgres"
 
     ports:
-      - 5436:5432
-
+      - "5438:5432"
 

@@ -1,5 +1,7 @@
-build:
-	docker-compose build api-task
+first-run:
+	docker-compose build && docker-compose up -d && docker-compose up techtask
+
 
 run:
-	docker-compose up api-task
+	docker-compose up techtask
+

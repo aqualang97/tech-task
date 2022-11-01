@@ -1,6 +1,7 @@
-config/postgres.env
 dataParse.csv
 .idea
 gen
 .database
 vendor
+DS_Store
+/.env
